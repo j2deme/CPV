@@ -1,0 +1,75 @@
+{% macro text(id, placeholder, value, size, read = false,focus = false) %}
+  <input type="text" class="form-control" id="{{ id }}" name="{{ id }}" placeholder="{{ placeholder }}" value="{{ value|default("")|e }}" size="{{ size|default(60) }}" autocomplete="off" {% if read %}readonly{% endif %} {% if focus %}autofocus{% endif %}>
+{% endmacro %}
+
+{% macro password(id, placeholder, size, read = false) %}
+  <input type="password" class="form-control" id="{{ id }}" name="{{ id }}" placeholder="{{ placeholder }}" size="{{ size|default(60) }}" autocomplete="off" {% if read %}readonly{% endif %}>
+{% endmacro %}
+
+{% macro textarea(id, ph, text, rows) %}
+<textarea name="{{ id }}" id="{{ id }}" class="form-control" rows="{{ rows|default(3) }}" placeholder="{{ ph|default("") }}">{{ text|default("") }}</textarea>
+{% endmacro %}
+
+{% macro check(id, text, name, checked = false, inline = false) %}
+<div class="{% if inline %}checkbox-inline{% else%}checkbox{% endif %}">
+  <label>
+    <input type="checkbox" name="{{ name|default(id) }}" id="{{ id }}" {% if checked %}checked{% endif %}> {{ text|default("") }}
+  </label>
+</div>
+{% endmacro %}
+
+{% macro radio(name,id,value,text, checked = false, inline = false) %}
+<div class="{% if inline %}radio-inline{% else %}radio{% endif %}">
+  <label>
+    <input type="radio" name="{{ name }}" id="{{ id }}" value="{{ value }}" {% if checked %}checked{% endif %}>{{ text|default("") }}
+  </label>
+</div>
+{% endmacro %}
+
+{% macro label(name, text = "") %}
+  <label for="{{ name }}" class="control-label">{{ text }}</label>
+{% endmacro %}
+
+{% macro option(val,text = "", selected = false) %}
+  <option value="{{ val|e }}" {% if selected %}selected{% endif %}>{{ text|default(val) }}</option>
+{% endmacro %}
+
+{% macro select(name, elements, selected = "", mul = false) %}
+  {% import _self as f %}
+  <select name="{{ name }}" id="{{ name }}" class="form-control" {% if mul %}multiple{% endif %}>
+    {{ f.option('0',"Elige una opción...",true) }}
+    {% for el in elements %}
+      {% set value = "" %}
+      {% set label = "" %}
+      {% if el.value is not defined %}
+        {% set value = el %}
+        {% set label = el %}
+      {% else %}
+        {% if el.label is defined %}
+          {% set value = el.value %}
+          {% set label = el.label %}
+        {% else %}
+          {% set value = el.value %}
+          {% set label = el.value %}
+        {% endif %}
+      {% endif %}
+      {% if value == selected %}
+        {{ f.option(value, label, true) }}
+      {% else %}
+        {{ f.option(value, label) }}
+      {% endif %}
+    {% endfor %}
+  </select>
+{% endmacro %}
+
+{% macro help(text) %}
+<p class="help-block">
+{% autoescape false %}
+  {{ text|default("") }}
+{% endautoescape %}
+</p>
+{% endmacro %}
+
+{% macro hide(id,value) %}
+<input type="hidden" id="{{ id|default("") }}" name="{{ id|default("") }}" value="{{ value|default("") }}">
+{% endmacro %}

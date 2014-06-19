@@ -1,0 +1,41 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <div class="page-header">
+      <h1>Registros <small>{{ now|date('Y') }}</small></h1>
+    </div>
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>Es alumno</th>
+          <th>No. de Control</th>
+          <th>Marca</th>
+          <th>Modelo</th>
+          <th>Placas</th>
+          <th>Estado</th>
+          <th>Color</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for reg in registros %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ reg.nombre }}</td>
+          <td>{% if reg.no_control is empty %} NO {% else %} SI {% endif %}</td>
+          <td>{{ reg.no_control }}</td>
+          <td>{{ reg.marca }}</td>
+          <td>{{ reg.modelo }}</td>
+          <td>{{ reg.placas }}</td>
+          <td>{{ reg.estado }}</td>
+          <td>{{ reg.color }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

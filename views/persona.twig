@@ -1,0 +1,294 @@
+{% import "forms.twig" as f %}
+{% extends 'base.twig' %}
+
+{% block content %}
+{% if persona.id is defined %}
+  {% set lside  = 3 %}
+  {% set center = 8 %}
+  {% set rside  = 1 %}
+{% else %}
+  {% set lside  = 3 %}
+  {% set center = 6 %}
+  {% set rside  = 3 %}
+{% endif %}
+  <div class="row">
+    <div class="col-md-{{ lside }}">
+    {% if persona.id is defined %}
+      <div class="alert alert-info">
+        <p><i class="fa fa-info-circle fa-3x pull-left"></i> Para realizar el proceso de registro de una manera más rápida y efectiva, es importante tener disponible la tarjeta de circulación de tu vehículo.</p>
+        <p>Todos los datos que se requieren están indicados en dicha tarjeta, en caso de no tenerla a la mano, aún es posible el registro, pero podría tomar un poco más de tiempo.</p>
+      </div>
+    {% endif %}
+    </div>
+    <div class="col-md-{{ center }}">
+    {% if persona.id is defined %}
+    <h2>Datos del propietario</h2><a href="{{ urlFor('root') }}" class="btn btn-danger btn-xs">Salir</a>
+    <dl class="dl-horizontal">
+      <dt>Nombre</dt>
+      <dd>{{ persona.nombre }}</dd>
+      {% if persona.no_control is defined and persona.no_control != "" %}
+      <dt>No. de Control</dt>
+      <dd>{{ persona.no_control }}</dd>
+      <dt>Semestre</dt>
+      <dd>{{ persona.semestre }}</dd>
+      <dt>Carrera</dt>
+      <dd>{{ persona.carrera }}</dd>
+      {% endif %}
+      <dt>Registrado</dt>
+      <dd>{{ persona.created_at }}</dd>
+    </dl>
+    <hr>
+    <p>Puedes registrar un máximo de 2 vehículos, sin importar su tipo, en caso de tener más de 2 vehículos, se recomienda registrar aquellos que se utilizan con mayor frecuencia para ingresar a las instalaciones.</p>
+    {% if vehiculos is defined and vehiculos[0] is defined %}
+    <p>En caso de errores al registrar tu vehículo puedes corregir los datos usando el botón de editar ubicado en la parte inferior de cada registro, de igual manera puedes dar de baja el vehículo usando el botón eliminar, pero ten cuidado, ya que una vez eliminado tendrás que registrarlo de nuevo.</p>
+    {% endif %}
+    <div class="row">
+      <div class="col-md-6">
+          {% if vehiculos is defined and vehiculos[0] is defined %}
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title">Vehículo 1</h3>
+            </div>
+            <div class="panel-body">
+              <dl class="dl-horizontal">
+                <dt>Placas</dt>
+                <dd>{{ vehiculos[0].placas|default("") }}</dd>
+                <dt>Estado</dt>
+                <dd>
+                {% for st in states %}
+                  {% if vehiculos[0].estado == st.value %}
+                  {{ st.label }}
+                  {% endif %}
+                {% endfor %}
+                </dd>
+                <dt>Marca</dt>
+                <dd>{{ vehiculos[0].marca|default("") }}</dd>
+                <dt>Modelo</dt>
+                <dd>{{ vehiculos[0].modelo|default("") }}</dd>
+                <dt>Tipo</dt>
+                <dd>{{ vehiculos[0].tipo|default("") }}</dd>
+                <dt>Color</dt>
+                <dd>{{ vehiculos[0].color|default("") }}</dd>
+                <dt></dt>
+                <dd>
+                {% if vehiculos[0].descripcion != "" %}
+                <a href="#" data-container="body" data-toggle="popover" data-placement="top" data-content="{{ vehiculos[0].descripcion|default("") }}" data-original-title="Descripción">Ver descripción</a>
+                {% endif %}
+                </dd>
+              </dl>
+            </div>
+            <div class="panel-footer">
+              <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group">
+                  <a href="{{ urlFor("edit-vehiculo",{'id_p': persona.id, 'id_v': vehiculos[0].id }) }}" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-pencil"></i> Editar</a>
+                  <a href="{{ urlFor("delete-vehiculo",{'id_p': persona.id, 'id_v': vehiculos[0].id }) }}" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fa fa-times"></i> Eliminar</a>
+                </div>
+              </div>
+            </div>
+          {% else %}
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <h2 class="text-center">Vehículo 1</h2>
+              <p class="text-center">
+                <a href="{{ urlFor('new-vehiculo',{'id': persona.id }) }}"><i class="fa fa-plus-circle fa-4x"></i></a>
+              </p>
+            </div>
+          {% endif %}
+          </div>
+      </div>
+      <div class="col-md-6">
+          {% if vehiculos is defined and vehiculos[1] is defined %}
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title">Vehículo 2</h3>
+            </div>
+            <div class="panel-body">
+              <dl class="dl-horizontal">
+                <dt>Placas</dt>
+                <dd>{{ vehiculos[1].placas|default("") }}</dd>
+                <dt>Estado</dt>
+                <dd>
+                {% for st in states %}
+                  {% if vehiculos[0].estado == st.value %}
+                  {{ st.label }}
+                  {% endif %}
+                {% endfor %}
+                </dd>
+                <dt>Marca</dt>
+                <dd>{{ vehiculos[1].marca|default("") }}</dd>
+                <dt>Modelo</dt>
+                <dd>{{ vehiculos[1].modelo|default("") }}</dd>
+                <dt>Tipo</dt>
+                <dd>{{ vehiculos[1].tipo|default("") }}</dd>
+                <dt>Color</dt>
+                <dd>{{ vehiculos[1].color|default("") }}</dd>
+                <dt></dt>
+                <dd>
+                {% if vehiculos[1].descripcion != "" %}
+                <a href="#" data-container="body" data-toggle="popover" data-placement="top" data-content="{{ vehiculos[1].descripcion|default("") }}" data-original-title="Descripción">Ver descripción</a>
+                {% endif %}
+                </dd>
+              </dl>
+            </div>
+            <div class="panel-footer">
+              <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group">
+                  <a href="{{ urlFor("edit-vehiculo",{'id_p': persona.id, 'id_v': vehiculos[1].id }) }}" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-pencil"></i> Editar</a>
+                  <a href="{{ urlFor("delete-vehiculo",{'id_p': persona.id, 'id_v': vehiculos[1].id }) }}" class="btn btn-danger btn-sm" data-toggle= btn-danger"tooltip" data-placement="top" title="Eliminar"><i class="fa fa-times"></i> Eliminar</a>
+                </div>
+              </div>
+            </div>
+          {% else %}
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <h2 class="text-center">Vehículo 2</h2>
+              <p class="text-center">
+                <a href="{{ urlFor('new-vehiculo',{'id': persona.id }) }}"><i class="fa fa-plus-circle fa-4x"></i></a>
+              </p>
+            </div>
+          {% endif %}
+          </div>
+      </div>
+    </div>
+    {% else %}
+      <form action="{{ urlFor('save-persona') }}" method="post" role="form" id="new-persona" name="new-persona">
+        <div class="form-group">
+          {{ f.label('nombre','Nombre Completo') }}
+          {{ f.text('nombre') }}
+          {{ f.help() }}
+        </div>
+        <div class="form-group">
+          {{ f.label('usuario','Usuario') }}
+          {{ f.text('usuario') }}
+          {{ f.help() }}
+        </div>
+        <div class="form-group">
+          {{ f.label('password','Contraseña') }}
+          {{ f.password('password') }}
+          {{ f.help("<i class=\"fa fa-info-circle\"></i> Recuerda tu contraseña pues la necesitaras si quieres volver a ingresar.") }}
+        </div>
+        <div class="form-group">
+          {{ f.radio('tipo','tipo1','personal','Soy Personal del Instituto',true,true) }}
+          {{ f.radio('tipo','tipo2','alumno','Soy Alumno',false,true) }}
+        </div>
+        <div id="alumno-info" class="hidden">
+        <div class="form-group">
+          {{ f.label('no_control','Número de Control') }}
+          {{ f.text('no_control','13691234','',8) }}
+          {{ f.help() }}
+        </div>
+        <div class="form-group">
+          {{ f.label('semestre','Semestre') }}
+          <select name="semestre" id="semestre" class="form-control">
+            {{ f.option('0',"Elige una opción...",true) }}
+            {% for i in range(1,12) %}
+            {{ f.option(i) }}
+            {% endfor %}
+          </select>
+          {{ f.help() }}
+        </div>
+        <div class="form-group">
+          {{ f.label('carrera','Carrera') }}
+          {{ f.select('carrera',carreras) }}
+          {{ f.help() }}
+        </div>
+        </div><!-- End alumno-info -->
+        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Guardar</button>&emsp;<a href="{{ urlFor('root') }}">Cancelar</a>
+      </form>
+    {% endif %}
+    </div>
+    <div class="col-md-{{ rside }}"></div>
+  </div>
+{% endblock %}
+
+{% block js %}
+{% if persona.id is defined %}
+<script>
+  $(function() {
+    $("[data-toggle=tooltip]").tooltip();
+    $("[data-toggle=popover]").popover();
+  });
+</script>
+{% else %}
+<script>
+  $(function(){
+    //var check = $("input[name=tipo]:checked");
+    var check = $("input[name=tipo]");
+    var nombre = $("input#nombre");
+    var usuario = $("input#usuario");
+    var password = $("input#password");
+    var no_control = $("input#no_control");
+    var semestre = $("select#semestre");
+    var carrera = $("select#carrera");
+    var elements = [no_control, nombre, usuario, password, semestre, carrera];
+
+    check.change(function(event) {
+      var checked = $("input[name=tipo]:checked");
+      if(checked.val() == 'alumno'){
+        $("div#alumno-info").removeClass('hidden').addClass('show').slideDown('slow');
+      } else {
+        $("div#alumno-info").removeClass('show').addClass('hidden').slideUp('slow');
+      }
+    });
+
+    $("form#new-persona").submit(function(event) {
+      cleanForm();
+      var semestre_val = semestre.find(":selected").val();
+      var carrera_val  = carrera.find(":selected").val();
+      var errors = 0;
+      var isChecked = (check.val() == 'alumno') ? true : false;
+      if(nombre.val() == ""){
+        error(nombre, "Escribe tu nombre completo");
+        errors++;
+      }
+      if(usuario.val() == ""){
+        error(usuario, "Escribe tu nombre de usuario");
+        errors++;
+      }
+      if(password.val() == ""){
+        error(password, "La contraseña no puede ser vacía");
+        errors++;
+      }
+
+      if(isChecked){
+        if(no_control.val() == ""){
+          error(no_control, "Escribe tu número de control");
+          errors++;
+        }
+        if(semestre_val == 0){
+          error(semestre, "Elige un semestre.");
+          errors++;
+        }
+        if(carrera_val == 0){
+          error(carrera, "Elige una carrera.");
+          errors++;
+        }
+      }
+
+      if(errors == 0){
+        $(this).submit();
+      } else {
+        event.preventDefault();
+      }
+    });
+
+    function cleanForm(){
+      $.each(elements, function(i, val) {
+        var el = elements[i];
+        var form_group = el.parent(".form-group");
+        var help = form_group.find("span.help-block");
+        form_group.removeClass('has-error');
+        help.text("");
+      });
+    }
+
+    function error (el, text) {
+      var parent = el.parent(".form-group");
+      var help = parent.find("span.help-block");
+      parent.addClass('has-error');
+      help.html("<i class=\"fa fa-exclamation-circle\"></i> "+text);
+    }
+  });
+</script>
+{% endif %}
+{% endblock %}

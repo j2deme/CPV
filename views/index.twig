@@ -1,0 +1,40 @@
+{% import "forms.twig" as f %}
+{% extends 'base.twig' %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+      <h3><i class="fa fa-exclamation red"></i> Leer antes de continuar</h3>
+      <p>El presente registro sirve para mantener un control de aquellos vehículos que ingresan de manera regular al Instituto Tecnológico de Ciudad Valles, y que son utilizados por los estudiantes y/o el personal, sean o no propiedad de los respectivos conductores.</p>
+      <p>El registro incluye todos los vehículos motorizados como: automóviles, camionetas y motocicletas. Una vez terminada la temporada de registro, todo vehículo no registrado, no podrá acceder a las instalaciones del Instituto.</p>
+
+      <h3>¿Qué vehículos NO se registran?</h3>
+      <ul>
+        <li>Bicicletas.</li>
+        <li>Vehículos compartidos, es decir, que sea propiedad* de un estudiante, pero en los que se trasladen varias personas, solo deberá registrarlo el propietario.</li>
+        <li>Vehículos utilizados por familiares o amigos para "traer" alumnos o personal.</li>
+        <li>Vehículos propiedad de alumnos o personal que sean usados de manera poco frecuente (<i>P.e. 2 o 3 ocasiones al mes</i>)</li>
+      </ul>
+      <p>* Se entenderá como "propiedad" el que sea utilizado.</p>
+
+      <p>Registrate para continuar el registro o inicia sesión si ya te habías registrado previamente. Cierre la ventana sino tiene vehículos para registrar.</p>
+      <div class="row">
+        <div class="col-md-6">
+          <a href="{{ urlFor('new-persona') }}" class="btn btn-primary btn-lg btn-block"><i class="fa fa-sign-in"></i> Registrarme</a>
+        </div>
+        <div class="col-md-6">
+          <a href="{{ urlFor('login') }}" class="btn btn-primary btn-lg btn-block"><i class="fa fa-user"></i> Iniciar Sesión</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2"></div>
+  </div>
+{% endblock %}
+
+{% block js %}
+<script>
+$(function() {
+});
+</script>
+{% endblock %}

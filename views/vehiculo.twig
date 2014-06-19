@@ -1,0 +1,165 @@
+{% import "forms.twig" as f %}
+{% extends 'base.twig' %}
+
+{% block css %}
+<style>
+  input#placas {
+    text-transform: uppercase;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+  {% set side =  3 %}
+  {% set center = 6 %}
+  <div class="row">
+    <div class="col-md-{{ side }}">
+      <div class="alert alert-info">
+        <p><i class="fa fa-info-circle fa-3x pull-left"></i> Para realizar el proceso de registro de una manera más rápida y efectiva, es importante tener disponible la tarjeta de circulación de tu vehículo.</p>
+        <p>Todos los datos que se requieren están indicados en dicha tarjeta, en caso de no tenerla a la mano, aún es posible el registro, pero podría tomar un poco más de tiempo.</p>
+      </div>
+    </div>
+    <div class="col-md-{{ center }}">
+      <form action="{{ urlFor('save-vehiculo') }}" method="post" role="form" id="new-vehiculo" name="new-vehiculo">
+        <div class="form-group">
+          {{ f.label('placas','Placas') }}
+          {% if vehiculo is defined %}
+            {{ f.text('placas',vehiculo.placas,vehiculo.placas) }}
+          {% else %}
+            {{ f.text('placas') }}
+          {% endif %}
+          {{ f.help("<i class=\"fa fa-info-circle\"></i> Sin guiones ni espacios.") }}
+        </div>
+        <div class="form-group">
+          {{ f.label('estado','Estado') }}
+          {% if vehiculo is defined %}
+            {{ f.select('estado',states,vehiculo.estado) }}
+          {% else %}
+            {{ f.select('estado',states) }}
+          {% endif %}
+          {{ f.help() }}
+        </div>
+        <div class="form-group">
+          {{ f.label('marca','Marca') }}
+          {% if vehiculo is defined %}
+            {{ f.text('marca',vehiculo.marca,vehiculo.marca) }}
+          {% else %}
+            {{ f.text('marca','Nissan Tsuru') }}
+          {% endif %}
+          {{ f.help() }}
+        </div>
+        <div class="form-group">
+          {{ f.label('modelo','Modelo (año)') }}
+          {% if vehiculo is defined %}
+            {{ f.text('modelo',vehiculo.modelo, vehiculo.modelo) }}
+          {% else %}
+            {{ f.text('modelo','2013') }}
+          {% endif %}
+          {{ f.help() }}
+        </div>
+        <div class="form-group">
+          {{ f.label('tipo','Tipo') }}
+          {% if vehiculo is defined %}
+            {{ f.select('tipo',tipos,vehiculo.tipo) }}
+          {% else %}
+            {{ f.select('tipo',tipos) }}
+          {% endif %}
+          {{ f.help() }}
+        </div>
+        <div class="form-group">
+          {{ f.label('color','Color') }}
+          {% if vehiculo is defined %}
+            {{ f.select('color',colores,vehiculo.color) }}
+          {% else %}
+            {{ f.select('color',colores) }}
+          {% endif %}
+          {{ f.help() }}
+        </div>
+        <div class="form-group">
+          {{ f.label('descripcion','Descripción (Opcional)') }}
+          {{ f.textarea('descripcion','Señas particulares',vehiculo.descripcion) }}
+        </div>
+        {{ f.hide('id_persona',id_persona) }}
+        {{ f.hide('id_vehiculo',vehiculo.id) }}
+        <br>
+        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Guardar</button>&emsp;<a href="{{ urlFor('view-persona',{'id':id_persona}) }}">Cancelar</a>
+      </form>
+    </div>
+    <div class="col-md-{{ side }}"></div>
+  </div>
+{% endblock %}
+
+{% block js %}
+{% if vehiculo.id is defined %}
+<script>
+$(function() {
+  $("[data-toggle=tooltip]").tooltip();
+});
+</script>
+{% else %}
+<script>
+$(function(){
+  var placas = $("input#placas");
+  var marca  = $("input#marca");
+  var modelo = $("input#modelo");
+  var color  = $("select#color");
+  var estado = $("select#estado");
+  var tipo   = $("select#tipo");
+  var elements = [placas, marca, modelo, color, estado, tipo];
+
+  $("form#new-vehiculo").submit(function(event) {
+    cleanForm();
+    var estado_val = estado.find(":selected").val();
+    var tipo_val  = tipo.find(":selected").val();
+    var color_val = color.find(":selected").val();
+    var errors = 0;
+
+    if(placas.val() == ""){
+      error(placas, "Escribe las placas de tu vehículo sin guiones ni espacios.");
+      errors++;
+    }
+    if(marca.val() == ""){
+      error(marca, "Escribe la marca de tu vehículo.");
+      errors++;
+    }
+    if(modelo.val() == ""){
+      error(modelo, "Escribe el modelo de tu vehículo.");
+    }
+    if(color_val == 0){
+      error(color, "Escribe el color de tu vehículo.")
+    }
+    if(tipo_val == 0){
+      error(tipo, "Elige un tipo de vehículo.");
+    }
+    if(estado_val == 0){
+      error(estado, "Elige un estado.");
+      errors++;
+    }
+
+    if(errors == 0){
+      $(this).submit();
+    } else {
+      event.preventDefault();
+    }
+  });
+
+  function cleanForm(){
+    $.each(elements, function(i, val) {
+      var el = elements[i];
+      var form_group = el.parent(".form-group");
+      var help = form_group.find("span.help-block");
+      form_group.removeClass('has-error');
+      help.text("");
+    });
+  }
+
+  function error (el, text) {
+    var parent = el.parent(".form-group");
+    var help = parent.find("span.help-block");
+    parent.addClass('has-error');
+    help.html("<i class=\"fa fa-exclamation-circle\"></i> "+text);
+  }
+});
+</script>
+{% endif %}
+{% endblock %}

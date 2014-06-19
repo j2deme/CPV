@@ -1,0 +1,12 @@
+{
+  "require": {
+    "php": ">=5.3.0",
+    "slim/slim": "2.*",
+    "slim/views": "0.1.*",
+    "twig/twig": "1.*",
+    "illuminate/database": "*",
+    "dhorrigan/capsule": "*"
+  },
+  "autoload": {
+  }
+}

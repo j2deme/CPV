@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Web App para el Control del Padrón Vehicular de ITCV">
+    <meta name="author" content="Jaime Jesús Delgado Meraz">
+    <title>Control del Padrón Vehicular</title>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Bootstrap core CSS -->
+    <link href="{{ urlFor('root') }}/bower_components/mrmrs-colors/css/colors.min.css" rel="stylesheet">
+    <link href="{{ urlFor('root') }}/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ urlFor('root') }}/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="{{ urlFor('root') }}/assets/css/flaticon.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="{{ urlFor('root') }}/assets/css/sticky-footer.css" rel="stylesheet">
+    <style>
+    {% block css %}{% endblock %}
+    </style>
+  </head>
+  <body>
+    <!-- Wrap all page content here -->
+    <div id="wrap">
+      <!-- Begin page content -->
+      <div class="container">
+        <div id="content">
+        <div class="page-header hidden-print">
+          <h1><a href="{{ urlFor('root') }}"><i class="fa flaticon-car fa-lg"></i></a> Control de Padrón Vehicular</h1>
+        </div>
+        {% block content %}{% endblock %}
+        </div>
+      </div>
+    </div>
+    <div id="footer" class="hidden-print">
+      <div class="container">
+        <p class="text-muted">&copy; {{ "now"|date('Y', timezone='America/Mexico_City') }} by <a href="http://twitter.com/j2deme" target="_blank">@j2deme</a></p>
+      </div>
+    </div>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{{ urlFor('root')}}/bower_components/jquery/jquery.min.js"></script>
+    <script src="{{ urlFor('root')}}/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    {% block js %}{% endblock %}
+  </body>
+</html>
